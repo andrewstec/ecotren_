@@ -1,0 +1,93 @@
+﻿@model EcoTrend_Industry_Project.Log
+
+@{
+    ViewBag.Title = "Add Note";
+    if (User.IsInRole("admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+}
+
+<h2>Add Note for @ViewBag.FirstName @ViewBag.LastName</h2>
+<hr />
+@using (Html.BeginForm("AddNote", "Admin", FormMethod.Post, new { @data_parsley_validate = "data-parsley-validate", @class = "form-horizontal" }))
+{
+    <input type="hidden" value="@ViewBag.SalesRepID" name="salesRepID" data-parsley-validate />
+    <input type="hidden" value="@ViewBag.ContactId" name="contactID" data-parsley-validate />
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Title</label>
+        <div class="col-md-6">
+            <input type="text" name="title" class="form-control" required data-parsley-errors-messages-disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Body</label>
+        <div class="col-md-6">
+            <textarea name="body" class="form-control" style="height:300px;resize:none;" required data-parsley-errors-messages-disabled></textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-6" style="text-align:center">
+            <input type="submit" class="btn btn-lg btn-success" value="Add Log" />
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Success!</strong>
+            </div>
+            <div class="modal-body bg-success">
+                <p>Successfully added new note! <span class="fa fa-smile-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Error!</strong>
+            </div>
+            <div class="modal-body bg-danger">
+                <p>Oh no... Something went wrong. Try again! <span class="fa fa-frown-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    if (ViewBag.Success != null)
+    {
+        <div id="success"></div>
+    }
+    else if (ViewBag.Error != null)
+    {
+        <div id="error"></div>
+    }
+}
+
+@section script{
+    <script>
+        if(document.getElementById("success")){
+            $("#successModal").modal("show");
+        }
+        if(document.getElementById("error")){
+            $("#errorModal").modal("show");
+        }
+    </script>
+}

@@ -1,0 +1,138 @@
+﻿@model IEnumerable<EcoTrend_Industry_Project.ViewModels.SalesRepVM>
+
+@{
+    ViewBag.Title = "Choose Contacts";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Choose Contacts</h2>
+<hr />
+<p>
+    <i>* Select at least one contact</i>
+</p>
+<div class="col-md-8">
+    @using (Html.BeginForm("ChooseContacts", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <table class="table">
+            <tr>
+                <th style="text-align:center;width:150px;">
+                    <a id="select" class="btn btn-default" onclick="toggle(this)">Select All</a>
+                    <input type="hidden" value="open" id="hiddenInput" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SalesRepID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Branch)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:center">
+                        <input type="checkbox" name="emails" value="@item.Email" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SalesRepID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Branch)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <input type="submit" class="btn btn-success pull-right" value="Send Email" />
+    }
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <strong>Success!</strong>
+                </div>
+                <div class="modal-body bg-success">
+                    <p>@TempData["success"]<span class="fa fa-smile-o fa-fw"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <strong>Error!</strong>
+                </div>
+                <div class="modal-body bg-danger">
+                    <p>
+                        Uh oh.. Something went wrong.
+                        <a href='../Admin/GetAllFlyers' class="alert-link">Please start again</a>.
+                        <span class="fa fa-frown-o fa-fw"></span>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        if (TempData["success"] != null)
+        {
+            <div id="success"></div>
+        }
+        else if (ViewBag.Error != null)
+        {
+            <div id="error"></div>
+        }
+    }
+
+</div>
+@section script{
+    <script>
+        function toggle(source) {
+            checkboxes = document.getElementsByName('emails');
+            select = document.getElementById('select');
+            hiddenInput = document.getElementById('hiddenInput');
+            if (hiddenInput.value == "open") {
+                select.innerHTML = "Unselect All";
+                hiddenInput.value = "close";
+                for (var i = 0, n = checkboxes.length; i < n; i++) {
+                    checkboxes[i].checked = true
+                }
+            }
+            else {
+                select.innerHTML = "Select All";
+                hiddenInput.value = "open";
+                for (var i = 0, n = checkboxes.length; i < n; i++) {
+                    checkboxes[i].checked = false
+                }
+            }
+        }
+    </script>
+    <script>
+        if (document.getElementById("success")) {
+            $("#successModal").modal("show");
+        }
+        if (document.getElementById("error")) {
+            $("#errorModal").modal("show");
+        }
+    </script>
+}

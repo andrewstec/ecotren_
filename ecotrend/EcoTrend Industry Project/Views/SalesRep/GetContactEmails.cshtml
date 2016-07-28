@@ -1,0 +1,139 @@
+﻿@model IEnumerable<EcoTrend_Industry_Project.ViewModels.ContactEmailVM>
+
+@{
+    ViewBag.Title = "Email Contacts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section style{
+    <style>
+        table thead tr th {
+            text-align: center;
+        }
+
+        table tbody tr {
+            text-align: center;
+        }
+
+        table {
+            display: block;
+            height: 700px;
+            overflow-y: scroll;
+        }
+    </style>
+}
+
+<h2>Select Email Contacts</h2>
+
+
+
+@*<form>
+        <fieldset id="mySelect">
+            @foreach (var item in Model)
+            {
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="@item.EmailAddress">
+                        @item.FullName
+                    </label>
+                </div>
+            }
+        </fieldset>
+    </form>*@
+<div class="col-md-6 table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width:150px;">
+                    <a id="select" class="btn btn-default" onclick="toggle(this)">Select All</a>
+                    <input type="hidden" value="open" id="hiddenInput" />
+                </th>
+                <th>Contact Name</th>
+            </tr>
+        </thead>
+        <tbody id="mySelect">
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" value="@item.EmailAddress" name="emails" />
+                        </td>
+                        <td>
+                            @item.FullName
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="col-md-6">
+    <button type="button" onclick="displayResult()" class="btn btn-default">Get Emails<span class="fa fa-envelope fa-fw"></span></button>
+    <a id="send" href="mailto:" class="btn btn-default pull-right"><span class="fa fa-paper-plane fa-fw"></span>Send email</a>
+
+    <div id="myEmailListt">
+        <button id="copyBtn" data-clipboard-target="#myEmailList" hidden>
+            <span class="fa fa-clipboard"></span>
+        </button>
+        <samp id="myEmailList"></samp>
+    </div>
+</div>
+
+@section script{
+    <script>
+        function displayResult() {
+            var se = document.getElementById("myEmailList"),
+                send = document.getElementById("send"),
+                x = document.getElementById("mySelect"),
+                l = [],
+                list = x.querySelectorAll(":checked"),
+                copyBtn = document.getElementById("copyBtn");
+            // loop the list and push the email stored in value to our array list
+            for (i = 0; i < list.length; i++) {
+                l.push(list[i].value);
+            }
+
+            // use array.join(",") to create a nice email list deliminated by commas
+            send.href = "mailto:" + l.join("; ");
+            se.innerHTML = l.join("; ");
+            copyBtn.removeAttribute("hidden");
+            if (se.innerHTML == "") {
+                copyBtn.setAttribute("hidden", "");
+            }
+
+        }
+    </script>
+
+    <script>
+        var btn = document.getElementById('copyBtn');
+        var clipboard = new Clipboard(btn);
+        clipboard.on('success', function (e) {
+            console.log(e);
+        });
+        clipboard.on('error', function (e) {
+            console.log(e);
+        });
+    </script>
+
+    <script>
+        function toggle(source) {
+            checkboxes = document.getElementsByName('emails');
+            select = document.getElementById('select');
+            hiddenInput = document.getElementById('hiddenInput');
+            if (hiddenInput.value == "open") {
+                select.innerHTML = "Unselect All";
+                hiddenInput.value = "close";
+                for (var i = 0, n = checkboxes.length; i < n; i++) {
+                    checkboxes[i].checked = true
+                }
+            }
+            else {
+                select.innerHTML = "Select All";
+                hiddenInput.value = "open";
+                for (var i = 0, n = checkboxes.length; i < n; i++) {
+                    checkboxes[i].checked = false
+                }
+            }
+        }
+    </script>
+}

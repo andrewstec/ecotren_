@@ -1,0 +1,107 @@
+﻿@model PagedList.IPagedList<EcoTrend_Industry_Project.ViewModels.SupplierDetailsVM>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "View All suppliers";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Suppliers Directory</h2>
+<hr />
+<div style="overflow-x:auto;">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Supplier ID
+                </th>
+                <th>
+                    Supplier Name
+                </th>
+                <th>
+                   Email
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SupplierID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        <a id="editListSalesReps" href="../Admin/EditSupplier?supplierID=@Html.DisplayFor(modelItem => item.SupplierID)">Edit </a> <a><span class="glyphicon glyphicon-pencil" title="Edit"></span></a> |
+
+                        <a id="editListSalesReps" href="../Admin/SupplierDetails?supplierID=@Html.DisplayFor(modelItem => item.SupplierID)"> View </a> <a><span class="glyphicon glyphicon-list-alt" title="View"></span></a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+  </div>
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Success!</strong>
+            </div>
+            <div class="modal-body bg-success">
+                <p>@TempData["success"]<span class="fa fa-smile-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Error!</strong>
+            </div>
+            <div class="modal-body bg-danger">
+                <p>Oh no... Something went wrong. Try again! <span class="fa fa-frown-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    if (TempData["success"] != null)
+    {
+        <div id="success"></div>
+    }
+    else if (ViewBag.Error != null)
+    {
+        <div id="error"></div>
+    }
+}
+<div class="pull-left">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ListSuppliers",
+new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+@section script{
+    <script>
+        if(document.getElementById("success")){
+            $("#successModal").modal("show");
+        }
+        if(document.getElementById("error")){
+            $("#errorModal").modal("show");
+        }
+    </script>
+}

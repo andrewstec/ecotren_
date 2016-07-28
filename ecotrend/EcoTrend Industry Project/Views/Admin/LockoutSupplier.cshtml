@@ -1,0 +1,71 @@
+﻿@model PagedList.IPagedList<EcoTrend_Industry_Project.ViewModels.SupplierDetailsVM>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Supplier Lockout Area";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<table class="table table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>
+               LockedOut
+            </th>
+            <th>
+             SupplierID
+            </th>
+            <th>
+            Name
+            </th>
+            <th>
+              Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                @if (item.LockedOut != null)
+                {
+                    @Html.Raw("<td style='color:red;'>Disabled</td>");
+                }
+                else
+                {
+                    @Html.Raw("<td style='color:green;'>Enabled</td>");
+                }
+                <th>
+                    @Html.DisplayFor(modelItem => item.SupplierID)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @if (item.LockedOut != null)
+                {
+                        <a href="../Admin/UnlockUser?from=Supplier&email=@Html.DisplayFor(modelItem => item.Email)">Enable Account<span class="glyphicon toggle-on" title="Enable Account"></span></a>
+                    }
+                    else
+                    {
+                        <a href="../Admin/LockUser?from=Supplier&email=@Html.DisplayFor(modelItem => item.Email)">Disable Account <span class="glyphicon toggle-off" title="Disable Account"></span></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="pull-left">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("LockoutSuppliers",
+new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>
+

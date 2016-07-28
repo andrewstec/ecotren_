@@ -1,0 +1,116 @@
+﻿@model PagedList.IPagedList<EcoTrend_Industry_Project.ViewModels.SalesRepVM>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "View All Sales Reps";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Sales Representatives Directory</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search Sales Reps: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+
+<div style="overflow-x:auto;">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.ActionLink("Sales Rep ID", "ListSalesReps", new { sortOrder = ViewBag.NameSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Branch", "ListSalesReps", new { sortOrder = ViewBag.DateSortParm })
+                </th>
+                <th>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SalesRepID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Branch)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a id="editListSalesReps" href="../Admin/EditSalesRep?salesRepID=@Html.DisplayFor(modelItem => item.SalesRepID)">Edit</a> <a><span class="glyphicon glyphicon-pencil" title="Edit"></span></a> |
+
+                        <a id="editListSalesReps" href="../Admin/SalesRepDetails?salesRepID=@Html.DisplayFor(modelItem => item.SalesRepID)">View</a> <a><span class="glyphicon glyphicon-list-alt" title="View"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ListSalesReps",
+new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Success!</strong>
+            </div>
+            <div class="modal-body bg-success">
+                <p>@TempData["success"] <span class="fa fa-smile-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Error!</strong>
+            </div>
+            <div class="modal-body bg-danger">
+                <p>Oh no... Something went wrong. Try again! <span class="fa fa-frown-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    if (TempData["success"] != null)
+    {
+        <div id="success"></div>
+    }
+    else if (TempData["error"] != null)
+    {
+        <div id="error"></div>
+    }
+}
+
+@section script{
+    <script>
+        if(document.getElementById("success")){
+            $("#successModal").modal("show");
+        }
+        if(document.getElementById("error")){
+            $("#errorModal").modal("show");
+        }
+    </script>
+}
+

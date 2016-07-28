@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/scripts/modernizr-2.8.3.js"></script>
+    <link rel="stylesheet" href="~/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Content/animate.css">
+    <link href="~/Content/parsley.css" rel="stylesheet" />
+    <link href="~/Content/salesrep.css" rel="stylesheet" />
+    <link href="~/Content/columnSorter.css" rel="stylesheet" media="print, project, screen" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+    @RenderSection("style", required: false)
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Ecotrend Contact Manager</span>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a>Last Updated: 2016-05-12 1:15PM</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.3.js"></script>
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.10/clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+    <script src="~/scripts/parsley.min.js"></script>
+    <script src="~/scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/scripts/jquery.tablesorter.min.js"></script>
+    <script>
+        $('[data-toggle="popover"]').popover();
+        $('#table_sorter').tablesorter();
+    </script>
+    @RenderSection("script", required: false)
+
+</body>
+</html>

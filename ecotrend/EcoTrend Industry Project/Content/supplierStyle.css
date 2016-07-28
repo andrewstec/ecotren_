@@ -1,0 +1,158 @@
+﻿body {
+    background-image: url('../images/supplier_wallpaper-1920x1080.jpg');
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.background {
+    //background: linear-gradient(to right, #c7c7c7, transparent 5%, transparent 97%, #c7c7c7);
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+.form {
+    position: absolute;
+    width: 700px;
+    height: 600px;
+    left: 50%;
+    top: 50%;
+    margin-left: -350px;
+    margin-top: -300px;
+    z-index: 50;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+}
+
+    .form .formContent {
+        margin: 15px;
+    }
+
+        .form .formContent hr {
+            color: white;
+        }
+
+        .form .formContent #hrOne {
+            margin-bottom: 50px;
+        }
+
+        .form .formContent #hrTwo {
+            margin-top: 50px;
+            margin-bottom: 25px;
+        }
+
+        .form .formContent textarea {
+            resize: none;
+            height: 200px;
+        }
+
+        .form .formContent #sendBtn {
+            background: #a0c85e;
+            box-shadow: 3px 3px 3px black;
+        }
+
+        .form .formContent .asterisk {
+            color: red;
+            margin-left: 5px;
+            font-size: 1.5em;
+        }
+
+.formBackground {
+    opacity: 0.7;
+    border: 2px solid #d9d9d9;
+    background-color: #a0c85e;
+    position: absolute;
+    width: 700px;
+    height: 600px;
+    left: 50%;
+    top: 50%;
+    margin-left: -350px;
+    margin-top: -300px;
+    z-index: 10;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    box-shadow: 15px 15px 10px black;
+}
+
+#logoutBtn{
+    position:absolute;
+    top: 20px;
+    right: 25px;
+    color: white;
+    text-decoration: underline;
+    font-size: 1.1em;
+}
+
+@media screen and (max-width: 1024px) {
+    body {
+        background-image: url('../images/supplier_wallpaper-1024x768.jpg');
+    }
+}
+
+@media screen and (max-width: 990px) {
+    body {
+        background-image: url('../images/supplier_wallpaper-1024x768.jpg');
+    }
+
+    .form .formContent #hrOne {
+        margin-bottom: 0px;
+    }
+
+    .form .formContent #hrTwo {
+        margin-top: -10px;
+    }
+}
+
+@media screen and (max-width: 980px) and (max-height: 1520px){
+    body {
+        background-image: url('../images/supplier_wallpaper-980x1520.jpg');
+    }
+}
+
+@media screen and (max-width: 980px) and (max-height: 405px){
+    body {
+        background-image: url('../images/supplier_wallpaper-980x1460.jpg');
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        background-image: url('../images/supplier_wallpaper-768x1024.jpg');
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .form {
+        position: absolute;
+        width: 500px;
+        height: 600px;
+        left: 50%;
+        top: 50%;
+        margin-left: -250px;
+        margin-top: -300px;
+        z-index: 50;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+    }
+
+    .formBackground {
+        opacity: 0.7;
+        border: 2px solid #d9d9d9;
+        background-color: #a0c85e;
+        position: absolute;
+        width: 500px;
+        height: 600px;
+        left: 50%;
+        top: 50%;
+        margin-left: -250px;
+        margin-top: -300px;
+        z-index: 10;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+        box-shadow: 15px 15px 10px black;
+    }
+}

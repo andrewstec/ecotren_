@@ -1,0 +1,159 @@
+﻿@model PagedList.IPagedList<EcoTrend_Industry_Project.ViewModels.LogContactVM>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Notes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@{
+    var logId = 0;
+}
+<h2>Notes</h2>
+<div class="table-responsive">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Date Posted
+                </th>
+                <th>
+                    Logged By:
+                </th>
+
+                <th>
+                    Title
+                </th>
+                <th>
+                    Message
+                </th>
+                <th>
+                    Store Name
+                </th>
+                <th>
+                    Contact ID
+                </th>
+                <th>
+                    Contact Name
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.logDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.salesRepName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.body)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.storeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.contactID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.contactName)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("EditLog", "Admin", new { id = item.logID })"><span class="glyphicon glyphicon-pencil"></span></a>
+                    </td>
+                    <td>
+                        @*<a href="@Url.Action("DeleteLog", "Admin", new { id = item.logID })"><span class="glyphicon glyphicon-trash"></span></a>*@
+                        <a href="" data-toggle="modal" data-target="#deleteModal">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                        <!--modal.start-->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">Delete This Log</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to delete this log?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <a href="@Url.Action("DeleteLog", "Admin", new { id = item.logID, result = "Yes" })" class="btn btn-danger">Yes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--modal.end-->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Success!</strong>
+            </div>
+            <div class="modal-body bg-success">
+                <p>@TempData["success"] <span class="fa fa-smile-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Error!</strong>
+            </div>
+            <div class="modal-body bg-danger">
+                <p>Oh no... Something went wrong. Try again! <span class="fa fa-frown-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    if (TempData["success"] != null)
+    {
+        <div id="success"></div>
+    }
+    else if (TempData["error"] != null)
+    {
+        <div id="error"></div>
+    }
+}
+<div class="pull-left">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Logs",
+new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+@section script{
+    <script>
+        if (document.getElementById("success")) {
+            $("#successModal").modal("show");
+        }
+        if (document.getElementById("error")) {
+            $("#errorModal").modal("show");
+        }
+    </script>
+}

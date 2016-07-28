@@ -1,0 +1,28 @@
+﻿html{
+    background-color: white;
+}
+
+#searchInput-div {
+    float: left;
+}
+
+    #searchInput-div input {
+        width: 250px;
+    }
+
+#searchBtn-div {
+    float: left;
+    margin-bottom: 15px;
+}
+
+.table-responsive {
+    clear: both;
+}
+
+#AddContactBtn{
+    float:right;
+}
+
+#GetAllContactBtn{
+    float: right;
+}

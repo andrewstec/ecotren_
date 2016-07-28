@@ -1,0 +1,42 @@
+﻿@model EcoTrend_Industry_Project.Log
+
+@{
+    ViewBag.Title = "AddNote";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section style{
+    <style>
+        .form-control{
+            width: 100%;
+        }
+    </style>
+}
+<h2>Add Note for @ViewBag.FirstName @ViewBag.LastName</h2>
+<hr />
+
+<div class="clearfix">
+    @using (Html.BeginForm("AddNote", "SalesRep", FormMethod.Post, new { @data_parsley_validate = "data-parsley-validate", @class = "form-horizontal" }))
+    {
+        <input type="hidden" value="@ViewBag.ContactId" name="contactID" data-parsley-validate />
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Title</label>
+            <div class="col-md-6">
+                <input type="text" name="title" class="form-control" required data-parsley-errors-messages-disabled />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Body</label>
+            <div class="col-md-6">
+                <textarea name="body" class="form-control" style="height:300px;resize:none;" required data-parsley-errors-messages-disabled></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6" style="text-align:center">
+                <input type="submit" class="btn btn-lg btn-success pull-left" value="Add Log" />
+            </div>
+        </div>
+    }
+
+</div>

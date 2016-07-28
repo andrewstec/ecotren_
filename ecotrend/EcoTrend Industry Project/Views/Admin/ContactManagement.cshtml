@@ -1,0 +1,197 @@
+﻿@*@model IEnumerable<EcoTrend_Industry_Project.Contact>*@
+
+
+@model PagedList.IPagedList<EcoTrend_Industry_Project.ViewModels.ContactVM>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Contact Management Area";
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+
+}
+<h2>Contact Management Area</h2>
+<br />
+@using (Html.BeginForm("ContactManagement", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div id="searchInput-div">
+        @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Search by first name or last name" })
+    </div>
+    <div id="searchBtn-div">
+        <button type="submit" class="btn btn-default">
+            Search
+            <span class="fa fa-search fa-fw"></span>
+        </button>
+    </div>
+}
+
+@{
+    if (User.IsInRole("admin"))
+    {
+        <form method="get" action="/Admin/CreateContact">
+            <div id="AddContactBtn">
+                <button type="submit" class="btn btn-primary">
+                    Add Contact
+                    <span class="fa fa-user-plus fa-fw"></span>
+                </button>
+                @*<input id="Submit1" type="submit" value="Add Contact" class="btn btn-default pull-right" />*@
+            </div>
+        </form>
+    }
+    else if (User.IsInRole("salesrep"))
+    {
+        <div id="AddContactBtn">
+            <a href="@Url.Action("AddContact", "SalesRep")" class="btn btn-primary">
+                Add Contact
+                <span class="fa fa-user-plus fa-fw"></span>
+            </a>
+            @*@Html.ActionLink("Add Contact", "AddContact", "SalesRep", null, new { @class = "btn btn-primary" })*@
+        </div>
+    }
+}
+
+<table id="" class="table table-responsive table-hover">
+    <thead>
+        <tr>
+            <th class="hidden-sm hidden-xs">
+                @*@Html.DisplayNameFor(model => model.contactID)*@
+                Contact ID
+            </th>
+            <th>
+                @*@Html.ActionLink("Company", "ContactManagement", new { sortOrder = ViewBag.DateSortParm })*@
+                @* @Html.DisplayNameFor(model => model.Store.shortName)*@
+                Store Name
+            </th>
+            <th class="hidden-sm hidden-xs">
+                @*@Html.DisplayNameFor(model => model.branch)*@
+                Department
+            </th>
+            <th>
+                @Html.ActionLink("First Name", "ContactManagement", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+
+            <th>
+                @Html.ActionLink("Last Name", "ContactManagement", new { sortOrder = ViewBag.NameSortParm })
+
+            </th>
+
+            <th>
+                @*@Html.DisplayNameFor(model => model.email)*@
+                Email
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.telephone)*@
+                Telephone
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var thing in Model)
+        {
+            <tr>
+                <td class="hidden-sm hidden-xs">
+                    @Html.DisplayFor(modelItem => thing.ContactID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => thing.StoreName)
+                </td>
+                <td class="hidden-sm hidden-xs">
+                    @Html.DisplayFor(modelItem => thing.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => thing.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => thing.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => thing.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => thing.Telephone)
+                </td>
+
+                <td>
+                    <a href="@Url.Action("EditContact", "Admin", new { id = thing.ContactID})" title="Edit Contact">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("ContactNotes", "Admin", new { salesRepID = thing.SalesRepID, contactId = thing.ContactID, firstName = thing.FirstName, lastName = thing.LastName} )">
+                        <span class="glyphicon glyphicon-list-alt" title="View Notes">
+                        </span>
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("AddNote", "Admin", new { salesRepID = thing.SalesRepID, contactId = thing.ContactID, firstName = thing.FirstName, lastName = thing.LastName })">
+                        <span class="glyphicon glyphicon-plus" title="Add Note"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div style="padding-bottom: 40px;" class="pull-left">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ContactManagement", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Success!</strong>
+            </div>
+            <div class="modal-body bg-success">
+                <p>@TempData["success"] <span class="fa fa-smile-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Error!</strong>
+            </div>
+            <div class="modal-body bg-danger">
+                <p>Oh no... Something went wrong. Try again! <span class="fa fa-frown-o fa-fw"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    if (TempData["success"] != null)
+    {
+        <div id="success"></div>
+    }
+    else if (TempData["error"] != null)
+    {
+        <div id="error"></div>
+    }
+}
+
+@section script{
+    <script>
+        if(document.getElementById("success")){
+            $("#successModal").modal("show");
+        }
+        if(document.getElementById("error")){
+            $("#errorModal").modal("show");
+        }
+    </script>
+}

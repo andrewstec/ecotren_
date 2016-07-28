@@ -1,0 +1,117 @@
+﻿@model EcoTrend_Industry_Project.ViewModels.SalesRepDetailsVM
+
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Sale Representative Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br /><br />
+<label>Sales Representative:</label><br />
+<p>@Html.DisplayFor(model => model.Name)</p>
+<label class="control-label">ID:</label><br />
+<p>@Html.DisplayFor(model => model.SalesRepID)</p>
+<label class="control-label">Branch:</label><br />
+<p>@Html.DisplayFor(model => model.Branch)</p>
+<br />
+
+@using (Html.BeginForm())
+{
+    <div id="searchInput-div">
+        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+    </div>
+    <div id="searchBtn-div">
+        <button type="submit" class="btn btn-default">
+            Search
+            <span class="fa fa-search fa-fw"></span>
+        </button>
+    </div>
+}
+
+@*<h2>Contacts For @Html.DisplayFor(model => model.Name)</h2>*@
+<div style="overflow-x:auto;clear:both;" class="table-responsive">
+    <table class="table">
+        <thead>
+            @foreach (var item in Model.RepsContacts)
+            {
+                <tr>
+                    <th>
+                        @*@Html.DisplayNameFor(modelItem => item.ContactID)*@
+                        Contact ID
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.StoreName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.Branch)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.Telephone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.Email)
+                    </th>
+                </tr>
+                break;
+            }
+        </thead>
+        <tbody>
+            @foreach (var item in Model.RepsContactsPagedList)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StoreName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Branch)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telephone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("salesrep"))
+                    {
+                            <td>
+
+                                <a href="../Admin/EditContact?contactID=@Html.DisplayFor(modelItem => item.ContactID)">Edit Contact <span class="glyphicon glyphicon-pencil" title="Edit Representative"></span></a> |
+                                <a href="@Url.Action("CreateContact", "Home", new { id = item.ContactID })" title="Add Contact"><span class="glyphicon glyphicon-plus" title="Edit Representative">Add Contact</span></a>
+                                <a href="../Admin/EditContact?contactID=@Html.DisplayFor(modelItem => item.ContactID)">Delete Contact <span class="glyphicon glyphicon-list-alt" title="Delete Contact"></span></a>
+                                <a href="@Url.Action("CreateContact", "Home", new { id = item.ContactID })" title="Delete Contact"><span class="glyphicon glyphicon-plus" title="Edit Representative">Delete Contact</span></a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="pull-right">
+    Page @(Model.RepsContactsPagedList.PageCount < Model.RepsContactsPagedList.PageNumber ? 0 : Model.RepsContactsPagedList.PageNumber) of @Model.RepsContactsPagedList.PageCount
+    @Html.PagedListPager(Model.RepsContactsPagedList, page => Url.Action("SalesRepDetails",
+new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, salesRepID = ViewBag.SalesRepID }))
+</div>
+
+
